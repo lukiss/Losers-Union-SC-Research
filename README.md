@@ -171,8 +171,7 @@ Ndef(\aStupidSimpleSillySingTing,{
 })
 ```
 
-### Fast Eddie "Acid Thunder" 
-
+### Fast Eddie "Acid Thunder" Homage to [one of the greatest](https://www.youtube.com/watch?v=AnHOelTxkCY)
 ```
 ( // #SuperColldier #FastEddie #Acid #Thunder
 SynthDef(\fe,{|freq=110,gate=1,m=1|
