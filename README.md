@@ -187,3 +187,81 @@ Pbind(\instrument,\fe,
 ).play;
 )
 ```
+### Acid Over 
+
+```
+( //  #SuperCollider #Acid #Crazy
+w=Window("",nil,1<0,1<0).background_(c=Color.clear).front;
+u=UserView(w,r=Rect(0,0,d=400,d)).animate_(1>0).background_(c)
+.drawFunc_({
+	(p=Pen).rotate(u.frame/99,d/2,d/2).color_(Color(1,1)).addOval(r)
+	.fill.color_(Color()).addOval(Rect.aboutPoint(150@125,25/2,50))
+	.addOval(Rect.aboutPoint(250@125,12,50))
+	.fill.addArc(200@200,150,0,pi).stroke});
+CmdPeriod.doOnce{w.close};play{m=ar(o=SinOsc,ar(q=QuadC,1)*8);
+	BPF.ar(ar(o,f={ar(q,m)*222+22},ar(o,m**f*2,0,m*6)).sign,m.max*4e3+22)!2
+})
+```
+### Gendy2 Appreciation 
+
+```
+({ // #SuperCollider #Daily #Gendyn #Doom 
+	l=LFDNoise3.ar(1!2).range(_,_);
+	LeakDC.ar(Splay.ar(
+		Gendy2.ar(2,3,3/pi,1,3,333,a:l.(0s1,0s),c:l.(0s1,0s)),l.(0s3,pi).sum%(2/3))) 
+}.play)
+
+({ // Bonus cruising of doom settings 
+	l=LFDNoise0.ar(1/8!2).lag(1).range(_,_);
+	LeakDC.ar(Splay.ar(
+		Gendy2.ar(6,6,l.(0s1,1),l.(0s1,1),3,3333,l.(0s,1).linlin(0s,1,-1,1),
+			l.(0s,1).linlin(0s,1,-1,1),12,l.(1,13),l.(0s1,0s),l.(0s1,pi)),
+		l.(0s3,pi).sum%(2/3)))
+}.play)
+```
+
+### Phase Modulation Nonsense
+```
+({ ar(Splay, // Phase Modulutaion Washer
+	ar(PMOsc,
+		f=(p=(1,3..64))/pi*p.degrad*(n=110),f*2,ar(o=SinOsc,f/n,0,ar(o,n/f,0,2)),
+		ar(o,3/p,0,pi),ar(o,1/p)),ar(o,ar(o,0s/n)*8)/ar(o,1/n)/2
+)}.play)
+```
+
+### Old Tweet.
+```
+({  #Something awfully old.
+	RecordBuf.ar(LFDNoise3.ar+PinkNoise.ar(8),a=LocalBuf(8*2048,1),loop:0);
+	Splay.ar(LeakDC.ar(
+			CombC.ar(Warp1.ar(1,a,f={LFDNoise3.kr(0.001!7).tan.abs},
+			f*0.03,Array.series(4,1/7,1/7)*0.12,-1,4,0,4),0.4,0.4,2
+).softclip)
+)}.play)
+```
+### Really Repetetive Chord
+```
+(Ndef(\61457,{ // The Chord
+	t=TDuty.ar(1);c=Splay.ar((BPF.ar(
+		WhiteNoise.ar*Env(flat([0,1]!4)++0,[0,0s/9,0,0s/9,0,0s7,0,0.5],
+			[0,-1,0,-1,0,-1,0,-12]).ar(0,t),[1700,3540],3/4).sum));
+	f=[131,311,196,233,65,349,292];e=Env.perc(0,1).ar(0,t);
+	o=Splay.ar(VarSaw.ar(f,0,(1-e/2)**2));
+	o=o*Env.asr(0s1,1,1/4,-7).ar(0,Trig.ar(t,3/4));
+	Out.ar(\out.kr(0),
+		DelayN.ar(MoogFF.ar(o,(log(e*LFDNoise3.ar(1,6,6)).sin.abs)*1e4+10),1,1/4)+c
+	);
+}))
+```
+
+### Drone for the Evening.
+```
+(s.options.numWireBufs_(512);s.reboot.waitForBoot(
+	{(Ndef(\💿,{ar(Out,\out.kr(0),
+			ar(Splay,ar(o=SinOsc,
+			c=(p=(1,3..64))**(p/p.sum).atan*(f={ar(LFDNoise1,8,1/16,33).midicps})*p,
+			ar(o,c*3)*ar(o,ar(o,p/c,0,8,8)/c,0,pi),ar(o,p/c)),ar(o,1/3,0,ar(o,1/32))))
+	}))})
+)
+```
+
