@@ -1,3 +1,32 @@
+### Mistakes were made 
+```
+(
+Ndef(\mistakes_were_made,{
+	var sig; 
+	p=9/7**(..16); c=LinCongC; d=(c.ar(c.ar(p.atan)**2*4)**4*8).abs;
+	t=c.ar(c.ar(d/p.atan).round(1/d)**4*d*8).sin;
+	f=TRand.ar(0,64,t).ceil.midicps;
+	sig=Splay.ar(
+		LeakDC.ar(Pluck.ar(
+			SinOsc.ar(f*p*p.log,0,SinOsc.ar(f*p*p.log/2)*2*d).sin,t,0.1,t.exprange/d/p,
+			(t**1.5*f)*(d/p.scramble),(p*(1-t.exprange)).sin.exprange(0.9999,0.5)
+		)),SinOsc.ar(f/d@0)).tanh*0.8;
+	Out.ar(\out.kr(0),sig)
+}))
+```
+
+### Grains, Daily.
+
+```
+(play{ /* #DailyGrain #SuperCollider */
+	m=ar(n=StandardL,ar(LFDNoise1,1).exprange*8+0s,2).exprange(_,_);
+	ar(LeakDC,
+		ar(GrainFM,2,ar(TDuty,m.(0.5,8)/f={ar(n,m.(1,128),m.(1,3)).exprange(40,5e3)}),
+			m.(0.1,4)/f,f,m.(1/4,4)*f,m.(1/4,4),ar(n,f/2)/2,
+			sendCollection(Buffer,s,perc(Env,0s1,1).discretize),1024)).softclip} 
+)
+```
+
 ### Doomsday Patch
 ```
 ({ // #D👀M #SuperCollider 
