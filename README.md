@@ -1,3 +1,93 @@
+### Feedback loop that keeps on evolving… for a long time. Really long.
+```
+({ar(LocalOut,o=ar(Splay,ar(LeakDC,ar(DelayC,(i=ar(LocalIn,2))+((1+i)**1b1),1,
+			ar(SinOsc,0.01/(1..8)).exprange)).tanh));1/5*ar(LPF,o,5e3)}.play)
+```
+
+### Broken Saws 
+```
+(play({ar(Splay,ar(BPF,
+	ar(v=VarSaw,
+		ar(v,(r=(3/4/(1..(c=[49,175,98,147,65,233]).size)))+6,0,1/2,2,c),
+		0,ar(v,1/r)**2)**ar(v,0s1/r+8,0,ar(v,1/3).abs,12,13),
+	ar(v,0s3/r,0,ar(v,r*8)).lag3(0.1).abs*4e3+80,1.1-ar(v,8*r)**2,ar(v,r/c))/2,
+	ar(v,1,0,ar(v,1)
+))},s,\fade,20))
+```
+
+### Moist and dry at the same time
+```
+(Ndef(\🎾,{
+	b=Buffer.alloc(s,s.sampleRate,bufnum: 1000);
+	n={LeakDC.ar(StandardL.ar(k:LFNoise1.ar(1).range(0.72,1.40)))}.();
+	RecordBuf.ar(n,b,z=Sweep.ar(0,1-n.exprange)%1*b.numFrames,t=(n.lag3(0s)>0),1-t,t,1,t);
+	p=PlayBuf.ar(1,b,(1-n.round(1/16))/TRand.ar(1,z/100,t).lag3(0s1),t,z,1);
+	o=Splay.ar(LeakDC.ar(MoogFF.ar(p,p.exprange*11025)).softclip);
+	Out.ar(0,o);
+}))
+```
+
+### Using ChaosGen.subclasses to write melodies
+```
+({ar(Splay,ar(DelayC,ar(FreeVerb,ar(o=SinOsc,f=ar(DegreeToKey,
+		Scale.aeolian.as(LocalBuf),ar(GbmanN,[8,4,6,2]).range(8,32).ceil).midicps,
+	ar(o,3*f)*(e=perc(Env,0s1,1/8).ar(0,(m=ar(o,[8,4,1/2,1]))))**2*ar(o,1s**(..3)/16,0,2,3))
+	*e,m.abs/2,1-m**2*2,1-m.exprange),0.2,m.abs/2048),m@3/2)
+}.play);
+
+({ar(Splay,ar(DelayC,ar(FreeVerb,ar(o=SinOsc,f=ar(DegreeToKey,
+	Scale.aeolian.as(LocalBuf),ar(StandardN,[8,4,6,2]).range(12,48).ceil).midicps,
+ar(o,3*f)*(e=perc(Env,0s1,1/8).ar(0,(m=ar(o,[8,4,1/2,1]))))**2*ar(o,1s**(..3)/16,0,2,3))*e,m.abs/2,
+1-m**2*2,1-m.exprange),0.2,m.abs/2048),m@3/2)}.play)
+
+// Using these to make melodies;
+
+(
+fork{
+	u=ChaosGen.subclasses;
+	c=u.iter;
+	u.size.do{
+		play{ar(c.next,freq:s.sampleRate/8)*Env.asr(0,1/2,1/9).ar(2,Trig.ar(1,4))!2};
+		4.2.wait}
+});
+
+```
+
+
+### Stretching again
+```
+(Ndef(\stretch_test,{
+	ar(Out,\out.ar(0),  // Move Mouse in X direction to stretch
+		ar(Splay,
+			ar(PlayBuf,1,read(Buffer,s,Platform.resourceDir++"/sounds/a11wlk01.wav"),
+				ar(LFNoise2,1!c=16,0s/c,1),t={|n|ar(PulseDivider,ar(TDuty,1/f=41),c,15-n)}!c,
+				ar(Sweep,0,kr(MouseX,0s1,1/5,1))%1*18e4,0)*sine(Env,c/f).ar(0,t),1/8)
+	)}
+))
+```
+
+
+### Kaos Sprinkler
+```
+({  // #SuperCollider #StandardN.ar #KaosSprinkler 
+	ar(Splay,ar(LeakDC,-12.dbamp*ar(o=StandardN,(e=ar(o,(c=1.5**(0,4..12))).exprange)*c*220,
+		LFDNoise3.ar(1!4,0s,0.97215),1/4,1/4,e.reverse)),ar(o,e.last*14))
+}.play)
+```
+
+### Phasing Patterns
+```
+({ // #Patterns
+	ar(Splay,
+		ar(o=SinOsc,
+			f=midicps(48+flat({|n|[0,-5,15,10]+(n*12)}!3)),
+			ar(o,f*2)*ar(o,1/f.acosh/ar(o,1/f,0,f),0,8,8),
+			ar(o,1.2**f.normalizeSum)**1.5*ar(o,f.atan)),
+		ar(o,1/8)
+)}.play)
+```
+
+
 ### Mistakes were made 
 ```
 (
