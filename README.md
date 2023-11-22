@@ -1,11 +1,11 @@
 ### Feedback loop that keeps on evolving… for a long time. Really long.
-```
+```supercollider
 ({ar(LocalOut,o=ar(Splay,ar(LeakDC,ar(DelayC,(i=ar(LocalIn,2))+((1+i)**1b1),1,
 			ar(SinOsc,0.01/(1..8)).exprange)).tanh));1/5*ar(LPF,o,5e3)}.play)
 ```
 
 ### Broken Saws 
-```
+```supercollider
 (play({ar(Splay,ar(BPF,
 	ar(v=VarSaw,
 		ar(v,(r=(3/4/(1..(c=[49,175,98,147,65,233]).size)))+6,0,1/2,2,c),
@@ -16,7 +16,7 @@
 ```
 
 ### Moist and dry at the same time
-```
+```supercollider
 (Ndef(\🎾,{
 	b=Buffer.alloc(s,s.sampleRate,bufnum: 1000);
 	n={LeakDC.ar(StandardL.ar(k:LFNoise1.ar(1).range(0.72,1.40)))}.();
@@ -25,10 +25,10 @@
 	o=Splay.ar(LeakDC.ar(MoogFF.ar(p,p.exprange*11025)).softclip);
 	Out.ar(0,o);
 }))
-```
+```supercollider
 
 ### Using ChaosGen.subclasses to write melodies
-```
+```supercollider
 ({ar(Splay,ar(DelayC,ar(FreeVerb,ar(o=SinOsc,f=ar(DegreeToKey,
 		Scale.aeolian.as(LocalBuf),ar(GbmanN,[8,4,6,2]).range(8,32).ceil).midicps,
 	ar(o,3*f)*(e=perc(Env,0s1,1/8).ar(0,(m=ar(o,[8,4,1/2,1]))))**2*ar(o,1s**(..3)/16,0,2,3))
@@ -55,7 +55,7 @@ fork{
 
 
 ### Stretching again
-```
+```supercollider
 (Ndef(\stretch_test,{
 	ar(Out,\out.ar(0),  // Move Mouse in X direction to stretch
 		ar(Splay,
@@ -68,7 +68,7 @@ fork{
 
 
 ### Kaos Sprinkler
-```
+```supercollider
 ({  // #SuperCollider #StandardN.ar #KaosSprinkler 
 	ar(Splay,ar(LeakDC,-12.dbamp*ar(o=StandardN,(e=ar(o,(c=1.5**(0,4..12))).exprange)*c*220,
 		LFDNoise3.ar(1!4,0s,0.97215),1/4,1/4,e.reverse)),ar(o,e.last*14))
@@ -76,7 +76,7 @@ fork{
 ```
 
 ### Phasing Patterns
-```
+```supercollider
 ({ // #Patterns
 	ar(Splay,
 		ar(o=SinOsc,
@@ -89,7 +89,7 @@ fork{
 
 
 ### Mistakes were made 
-```
+```supercollider
 (
 Ndef(\mistakes_were_made,{
 	var sig; 
@@ -107,7 +107,7 @@ Ndef(\mistakes_were_made,{
 
 ### Grains, Daily.
 
-```
+```supercollider
 (play{ /* #DailyGrain #SuperCollider */
 	m=ar(n=StandardL,ar(LFDNoise1,1).exprange*8+0s,2).exprange(_,_);
 	ar(LeakDC,
@@ -118,7 +118,7 @@ Ndef(\mistakes_were_made,{
 ```
 
 ### Doomsday Patch
-```
+```supercollider
 ({ // #D👀M #SuperCollider 
 	c=Buffer.allocConsecutive(12,s,4096);{|n|c[n].sine1(1/(1..n+1))}!12;
 	Splay.ar(LeakDC.ar(
@@ -132,7 +132,7 @@ Ndef(\mistakes_were_made,{
 )
 ```
 ### Spa Saw Shower Wash
-```
+```supercollider
 (Ndef(\spa_saw_shower_wash,{
 	c=Buffer.alloc(s,4096);c.sine1(1/(1..128));
 	w=LFDNoise3.ar(_).lincurve(-1,1,80,6880,LFDNoise3.kr(1,6));
@@ -146,7 +146,7 @@ Ndef(\mistakes_were_made,{
 }) /* #SuperCollider #Friday #SpaMusic #Washy #Soap */ )
 ```
 ### Dodgy Suspicious Jazz
-```
+```supercollider
 (Ndef(\suspect_jazz,{
 	x=HenonL.ar(1+LFDNoise1.kr(3).exprange*8).fold2;
 	t={|n|PulseDivider.ar(x,8,7-n)}!8;
@@ -164,7 +164,7 @@ Ndef(\mistakes_were_made,{
 }))
 ```
 ### Auto Collage of your .recordingsDir
-```
+```supercollider
 (/* #SuperCollider #AutoCollage */ 
 fork{f=SoundFile.collect(Platform.recordingsDir+/+"*.wav");0.2.wait};
 fork{
@@ -179,7 +179,7 @@ fork{
 
 ### Simple sloppy reverb
 
-```
+```supercollider
 (Ndef(\sloppy_verb,{
 	var clap,slap,rnd;
 	rnd = {LFDNoise3.ar(137,0.25,1)};
@@ -198,7 +198,7 @@ fork{
 
 A little bigger thing that i didn't manage to squeeze down to a more reasonable size
 
-```
+```supercollider
 (
 	var tab, dur, env, trg, freq, voc, snd, mel;
 
@@ -280,7 +280,7 @@ Ndef(\aStupidSimpleSillySingTing,{
 
 ### Little Rhythm Thing using the VarSaw uGen
 
-```
+```supercollider
 (play{ /* #Silly #Rhythm #SuperCollider */
 	ar(Splay,(e=hanWindow(
 		ar(VarSaw,(p=(2**(..6))/4)/4,0,
@@ -291,7 +291,7 @@ Ndef(\aStupidSimpleSillySingTing,{
 ```
 
 ### Fast Eddie "Acid Thunder" Homage to [one of the greatest](https://www.youtube.com/watch?v=AnHOelTxkCY)
-```
+```supercollider
 ( // #SuperColldier #FastEddie #Acid #Thunder
 SynthDef(\fe,{|freq=110,gate=1,m=1|
 	e=Env.adsr(0s/m,0s,1/2,1/8).ar(2,gate);
@@ -308,7 +308,7 @@ Pbind(\instrument,\fe,
 ```
 ### Acid Over 
 
-```
+```supercollider
 ( //  #SuperCollider #Acid #Crazy
 w=Window("",nil,1<0,1<0).background_(c=Color.clear).front;
 u=UserView(w,r=Rect(0,0,d=400,d)).animate_(1>0).background_(c)
@@ -323,7 +323,7 @@ CmdPeriod.doOnce{w.close};play{m=ar(o=SinOsc,ar(q=QuadC,1)*8);
 ```
 ### Gendy2 Appreciation 
 
-```
+```supercollider
 ({ // #SuperCollider #Daily #Gendyn #Doom 
 	l=LFDNoise3.ar(1!2).range(_,_);
 	LeakDC.ar(Splay.ar(
@@ -340,7 +340,7 @@ CmdPeriod.doOnce{w.close};play{m=ar(o=SinOsc,ar(q=QuadC,1)*8);
 ```
 
 ### Phase Modulation Nonsense
-```
+```supercollider
 ({ ar(Splay, // Phase Modulutaion Washer
 	ar(PMOsc,
 		f=(p=(1,3..64))/pi*p.degrad*(n=110),f*2,ar(o=SinOsc,f/n,0,ar(o,n/f,0,2)),
@@ -349,7 +349,7 @@ CmdPeriod.doOnce{w.close};play{m=ar(o=SinOsc,ar(q=QuadC,1)*8);
 ```
 
 ### Old Tweet.
-```
+```supercollider
 ({  #Something awfully old.
 	RecordBuf.ar(LFDNoise3.ar+PinkNoise.ar(8),a=LocalBuf(8*2048,1),loop:0);
 	Splay.ar(LeakDC.ar(
@@ -359,7 +359,7 @@ CmdPeriod.doOnce{w.close};play{m=ar(o=SinOsc,ar(q=QuadC,1)*8);
 )}.play)
 ```
 ### Really Repetetive Chord
-```
+```supercollider
 (Ndef(\61457,{ // The Chord
 	t=TDuty.ar(1);c=Splay.ar((BPF.ar(
 		WhiteNoise.ar*Env(flat([0,1]!4)++0,[0,0s/9,0,0s/9,0,0s7,0,0.5],
@@ -374,7 +374,7 @@ CmdPeriod.doOnce{w.close};play{m=ar(o=SinOsc,ar(q=QuadC,1)*8);
 ```
 
 ### Drone for the Evening.
-```
+```supercollider
 (s.options.numWireBufs_(512);s.reboot.waitForBoot(
 	{(Ndef(\💿,{ar(Out,\out.kr(0),
 			ar(Splay,ar(o=SinOsc,
